@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""Advent of code day 04"""
+"""Advent of code day 04 - Camp Cleanup"""
 
 
 def readpairs(path: str) -> list[list[int]]:

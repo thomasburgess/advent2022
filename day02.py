@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""Advent of code day 02"""
+"""Advent of code day 02 - Rock Paper Scissors"""
 
 
 def readstrats(path: str) -> list[int]:

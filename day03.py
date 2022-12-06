@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""Advent of code day 03"""
+"""Advent of code day 03 - Rucksack Reorganization"""
 
 
 def priority(c: chr) -> int:

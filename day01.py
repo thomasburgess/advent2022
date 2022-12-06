@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""Advent of code day 01"""
+"""Advent of code day 01 - Calorie Counting"""
 
 
 def readsums(path: str) -> list[int]:

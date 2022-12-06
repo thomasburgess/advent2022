@@ -7,6 +7,10 @@ These are my contributions to [AdventOfCode2022](https://adventofcode.com). Read
 
 ```python
 
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""Advent of code day XX - """
+
 def read_data(path: str) -> list:
     result = []
     with open(path, "r") as f:
@@ -27,4 +31,3 @@ if __name__ == "__main__":
     print("input", part2(indata))
 
 ```
-

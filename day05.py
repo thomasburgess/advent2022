@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""Advent of code day 04"""
+"""Advent of code day 05 - Supply Stacks"""
 import re
 from collections import defaultdict
 
