@@ -12,11 +12,8 @@ These are my contributions to [AdventOfCode2022](https://adventofcode.com). Read
 """Advent of code day XX - """
 
 def read_data(path: str) -> list:
-    result = []
     with open(path, "r") as f:
-        for line in f.readlines():
-            result.append(line)
-    return result
+        return f.readlines()
 
 if __name__ == "__main__":
     exdata = read_data("dayXX_example.txt")
