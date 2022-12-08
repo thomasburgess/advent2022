@@ -1,12 +1,12 @@
 # advent2022
 
-These are my contributions to [AdventOfCode2022](https://adventofcode.com). Read more about them on my [blog](https://thomasburgess.github.io/blog/2022/12/01/aoc22.html).
-
+These are my contributions to [AdventOfCode2022](https://adventofcode.com). 
+This year I aim to use vanilla python 3.10.4 with no additional libraries to complete the tasks.
+Read more about them on my [blog](https://thomasburgess.github.io/blog/2022/12/01/aoc22.html).
 
 ## Template
 
 ```python
-
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """Advent of code day XX - """
@@ -26,5 +26,4 @@ if __name__ == "__main__":
     print("PART 2")
     print("example", part2(exdata))
     print("input", part2(indata))
-
 ```

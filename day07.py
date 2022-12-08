@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""Advent of code day 07 - """
+"""Advent of code day 07 - No Space Left On Device"""
 
 
 def read_tree(path: str) -> dict:
