@@ -11,12 +11,12 @@ def read_map(path: str) -> tuple[tuple[int]]:
         return tuple(tuple(map(int, i.strip())) for i in f.readlines())
 
 
+# PART 1
+
+
 def T(data: tuple[tuple[int]]) -> tuple[tuple[int]]:
     """Transpose list of lists"""
     return tuple(zip(*data))
-
-
-# PART 1
 
 
 def vor(x: list[bool], y: list[bool]) -> list[bool]:
