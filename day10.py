@@ -18,7 +18,7 @@ def run_program(prog: list[tuple[int, int]], x: int = 1) -> list[tuple[int, int]
     return y
 
 
-def part1(out: list[tuple[int, int]]):
+def part1(out: list[tuple[int, int]]) -> int:
     result = 0
     for q in range(20, out[-1][0], 40):
         *_, x = (q * v for (t, v) in out if t < q)
@@ -26,7 +26,7 @@ def part1(out: list[tuple[int, int]]):
     return result
 
 
-def part2(prog: list[tuple[int, int]]):
+def part2(prog: list[tuple[int, int]]) -> str:
     idx = 0
     result = [" "] * 240
     for s in range(240):
