@@ -2,8 +2,6 @@
 # -*- coding: utf-8 -*-
 """Advent of code day 08 - Treetop Tree House"""
 
-from itertools import takewhile
-
 
 def read_map(path: str) -> tuple[tuple[int]]:
     """Read in data into 2D int array"""
