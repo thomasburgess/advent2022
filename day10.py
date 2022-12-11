@@ -35,7 +35,8 @@ def part2(prog: list[tuple[int, int]]) -> str:
             result[s] = "█"
         if s > prog[idx][0]:
             idx += 1
-    return "\n".join("".join(result[i * 40 : (i + 1) * 40]) for i in range(6))
+    for i in range(6):
+        print("".join(result[i * 40 : (i + 1) * 40]))
 
 
 if __name__ == "__main__":
@@ -47,5 +48,7 @@ if __name__ == "__main__":
     print("input", part1(indata))
 
     print("PART 2")
-    print("example\n", part2(exdata))
-    print("input\n", part2(indata))
+    print("example")
+    part2(exdata)
+    print("input")
+    part2(indata)
