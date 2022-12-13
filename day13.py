@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 """Advent of code day 13 - Distress Signal"""
 
-import json
 import functools
 import operator
 
@@ -11,8 +10,7 @@ def read_pairs(path: str) -> list:
     with open(path, "r") as f:
         lines = f.readlines()
         return [
-            list(map(json.loads, (lines[i], lines[i + 1])))
-            for i in range(0, len(lines), 3)
+            list(map(eval, (lines[i], lines[i + 1]))) for i in range(0, len(lines), 3)
         ]
 
 
