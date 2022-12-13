@@ -20,13 +20,13 @@ def compare(left, right):
         if all(ints):
             if r == l:
                 continue
-            return int(l < r)
+            return l < r
         result = compare([l] if ints[0] else l, [r] if ints[1] else r)
         if result is not None:
             return result
     if len(left) == len(right):
         return
-    return int(len(left) < len(right))
+    return len(left) < len(right)
 
 
 def prod(x):
