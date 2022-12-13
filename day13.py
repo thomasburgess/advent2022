@@ -18,19 +18,15 @@ def compare(left, right):
     for l, r in zip(left, right):
         ints = tuple(map(lambda x: isinstance(x, int), (l, r)))
         if all(ints):
-            if l < r:
-                return 1
-            elif r < l:
-                return 0
-            else:
+            if r == l:
                 continue
+            return int(l < r)
         result = compare([l] if ints[0] else l, [r] if ints[1] else r)
         if result is not None:
             return result
-    if len(left) > len(right):
-        return 0
-    if len(right) > len(left):
-        return 1
+    if len(left) == len(right):
+        return
+    return int(len(left) < len(right))
 
 
 def prod(x):
