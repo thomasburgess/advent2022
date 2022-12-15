@@ -6,76 +6,68 @@ import re
 
 
 def distance(x):
-    d = abs(x[0] - x[2]) + abs(x[1] - x[3])
-    return d, x[1] - d, x[1] + d
+    return abs(x[0] - x[2]) + abs(x[1] - x[3])
 
 
-def read_beacons(path: str) -> dict[tuple[int, int], str]:
-    result = []
+def read_beacons(path: str) -> list[tuple[int, int], int]:
     with open(path, "r") as f:
-        return sorted(
-            list(
-                map(
-                    lambda x: (x[0:2], x[2:4], *distance(x)),
-                    (
-                        tuple(
-                            int(i)
-                            for i in re.split("; |, |=|:", line.strip())
-                            if i.replace("-", "").isdigit()
-                        )
-                        for line in f.readlines()
-                    ),
-                )
-            ),
-            key=lambda x: x[4],
+        return list(
+            map(
+                lambda x: (x[0:2], x[2:4], distance(x)),
+                (
+                    tuple(
+                        int(i)
+                        for i in re.split("; |, |=|:", line.strip())
+                        if i.replace("-", "").isdigit()
+                    )
+                    for line in f.readlines()
+                ),
+            )
         )
 
 
 def cover(row, beacons):
-    overlap = set()
-    for s, b, d, ylo, yup in beacons:
-        if ylo < row > yup:
-            continue
+    covered = set()
+    for s, b, d in beacons:
         dd = d - abs(s[1] - row)
         if dd < 0:
             continue
-        overlap.update(range(s[0] - dd, s[0] + dd + 1))
+        covered.update(range(s[0] - dd, s[0] + dd + 1))
         if b[1] == row:
-            overlap.remove(b[0])
-    return overlap
+            covered.remove(b[0])
+    return len(covered)
 
 
-def merge(arr):
-    arr.sort(key=lambda x: x[0])
-    idx = 0
-    for a in arr[1:]:
-        if arr[idx][1] >= a[0]:
-            arr[idx][1] = max(arr[idx][1], a[1])
-        else:
-            idx += 1
-            arr[idx] = a
-    return arr[: idx + 1]
-
-
-def cover2(row, beacons, lim):
-    overlaps = []
-    for s, b, d, ylo, yup in beacons:
-        if ylo < row > yup:
-            continue
+def calc_covers(row, beacons, lim):
+    covers = []
+    for s, b, d in beacons:
         dd = d - abs(s[1] - row)
         if dd < 0:
             continue
         x = max(0, s[0] - dd), min(lim, s[0] + dd + 1)
-        overlaps.append([x[0], x[1]])
-        overlaps = merge(overlaps)
-        if overlaps[0][0] == 0 and overlaps[0][0] == lim:
-            return overlaps
-    return overlaps
+        covers.append([x[0], x[1]])
+        if len(covers) == 1:
+            continue
+
+        # Now remove covers
+        covers.sort(key=lambda x: x[0])
+        idx = 0
+        for a in covers:
+            if covers[idx][1] >= a[0]:
+                covers[idx][1] = max(covers[idx][1], a[1])
+            else:
+                idx += 1
+                covers[idx] = a
+        covers = covers[: idx + 1]
+
+        if covers[0][0] == 0 and covers[0][0] == lim:
+            return covers
+    return covers
 
 
 def part2(lim: int, beacons):
     for row in range(lim):
-        overlap = cover2(row, beacons, lim)
+        overlap = calc_covers(row, beacons, lim)
         if len(overlap) != 1:
             return 4000000 * overlap[0][1] + row
 
@@ -86,8 +78,8 @@ if __name__ == "__main__":
     indata = read_beacons(f"day{DAY}_input.txt")
 
     print("PART 1")
-    print("\texample", len(cover(10, exdata)))
-    print("\tinput", len(cover(2000000, indata)))
+    print("\texample", cover(10, exdata))
+    print("\tinput", cover(2000000, indata))
 
     print("PART 2")
     print("\texample", part2(20, exdata))
