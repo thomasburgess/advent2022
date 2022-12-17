@@ -2,10 +2,7 @@
 # -*- coding: utf-8 -*-
 """Advent of code day 16 - Proboscidea Volcanium"""
 
-import heapq
-
 import re
-import pprint
 import collections
 
 
@@ -31,24 +28,25 @@ def generate_steps(data, c, opened):
         yield c, opened | set((c,))
 
 
-def bfs(data):
-    seen = {"AA": 0}
-    queue = collections.deque([(1, "AA", 0, set())])
-    best = 0
+def bfs(data, start, steps, opened=set()):
+    seen = {start: 0}
+    queue = collections.deque([(1, [start], 0, opened)])
+    paths = []
     while queue:
-        t, c, pressure, opened = queue.pop()
-        if t == 30:
-            best = max(best, pressure)
+        t, path, pressure, opened = queue.pop()
+        c = path[-1]
+        if t == steps:
+            paths.append((pressure, path, opened))
             continue
         if seen.get((t, c), -1) >= pressure:
             continue
         seen[(t, c)] = pressure
         pressure += sum(data[o][0] for o in opened)
         queue.extend(
-            (t + 1, i, pressure + (data[c][0] if i == c else 0), o)
+            (t + 1, path + [i], pressure + (data[c][0] if i == c else 0), o)
             for i, o in generate_steps(data, c, opened)
         )
-    return best
+    return paths
 
 
 def find_elephant(data, start="AA", steps=26):
@@ -75,11 +73,14 @@ if __name__ == "__main__":
     DAY = "16"
     exdata = read_valves(f"day{DAY}_example.txt")
     indata = read_valves(f"day{DAY}_input.txt")
+
+    start = "AA"
+    steps = 30
     print("PART 1")
-    print("\texample", bfs(exdata))
-    print("\tinput", bfs(indata))
+    print("\texample", max(bfs(data=exdata, start=start, steps=steps)))
+    print("\tinput", max(bfs(data=indata, start=start, steps=steps))[0])
 
     print("PART 2")
     steps = 26
-    print("\texample", find_elephant(exdata, steps=steps))
-    print("\tinput", find_elephant(indata, steps=steps))
+    print("\texample", find_elephant(data=exdata, start=start, steps=steps))
+    print("\tinput", find_elephant(data=indata, start=start, steps=steps))
