@@ -4,9 +4,13 @@
 
 import re
 import collections
+from typing import Iterator
 
 
-def read_valves(path: str) -> dict[dict]:
+VALVES_T = dict[str : tuple[int, list[int]]]
+
+
+def read_valves(path: str) -> VALVES_T:
     valves = {}
     with open(path, "r") as f:
         return {
@@ -19,16 +23,16 @@ def read_valves(path: str) -> dict[dict]:
         }
 
 
-def generate_steps(data, c, opened):
+def generate_steps(valves: VALVES_T, c: str, opened) -> Iterator[tuple[str, set[str]]]:
     # Explore tunnels
-    for v in data[c][1]:
+    for v in valves[c][1]:
         yield v, opened
     # Open valve
-    if data[c][0] > 0 and c not in opened:
+    if valves[c][0] > 0 and c not in opened:
         yield c, opened | set((c,))
 
 
-def bfs(data, start, steps, opened=set()):
+def search(valves: VALVES_T, start: str, steps: int, opened: set[str] = set()) -> int:
     seen = {start: 0}
     queue = collections.deque([(1, [start], 0, opened)])
     paths = []
@@ -41,15 +45,15 @@ def bfs(data, start, steps, opened=set()):
         if seen.get((t, c), -1) >= pressure:
             continue
         seen[(t, c)] = pressure
-        pressure += sum(data[o][0] for o in opened)
+        pressure += sum(valves[o][0] for o in opened)
         queue.extend(
-            (t + 1, path + [i], pressure + (data[c][0] if i == c else 0), o)
-            for i, o in generate_steps(data, c, opened)
+            (t + 1, path + [i], pressure + (valves[c][0] if i == c else 0), o)
+            for i, o in generate_steps(valves, c, opened)
         )
-    return paths
+    return max(paths)[0]
 
 
-def find_elephant(data, start="AA", steps=26):
+def search_elephant(valves: VALVES_T, start: str = "AA", steps: int = 26) -> int:
     frontier = [(0, (start, start), set())]
     for i in range(0, steps):
         if i > 5:
@@ -59,11 +63,11 @@ def find_elephant(data, start="AA", steps=26):
             frontier = frontier[:5000]
         update = []
         for pressure, (a, b), opened in frontier:
-            pressure += sum(data[o][0] for o in opened)
+            pressure += sum(valves[o][0] for o in opened)
             update.extend(
                 (pressure, (ia, ib), ob)
-                for ia, oa in generate_steps(data, a, opened)
-                for ib, ob in generate_steps(data, b, oa)
+                for ia, oa in generate_steps(valves, a, opened)
+                for ib, ob in generate_steps(valves, b, oa)
             )
         frontier = update
     return max(frontier)[0]
@@ -77,10 +81,10 @@ if __name__ == "__main__":
     start = "AA"
     steps = 30
     print("PART 1")
-    print("\texample", max(bfs(data=exdata, start=start, steps=steps)))
-    print("\tinput", max(bfs(data=indata, start=start, steps=steps))[0])
+    print("\texample", search(valves=exdata, start=start, steps=steps))
+    print("\tinput", search(valves=indata, start=start, steps=steps))
 
     print("PART 2")
     steps = 26
-    print("\texample", find_elephant(data=exdata, start=start, steps=steps))
-    print("\tinput", find_elephant(data=indata, start=start, steps=steps))
+    print("\texample", search_elephant(valves=exdata, start=start, steps=steps))
+    print("\tinput", search_elephant(valves=indata, start=start, steps=steps))
